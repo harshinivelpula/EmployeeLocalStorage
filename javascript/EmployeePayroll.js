@@ -68,3 +68,61 @@ salary.addEventListener('input',function(){
     output.textContent = salary.value;
 });
 });
+--uc3
+const save = () =>{
+    try {
+        let employeePayrollData = createEmplooyeePayroll();
+        createAndUpdateStorage(employeePayrollData)
+    } catch (e) {
+        return;
+        
+    }
+}
+function createAndUpdateStorage(employeePayrollData){
+    let employeePayrollList= JSON.parse(localStorage.getItem("EmployeePayrollList"));
+    if(employeePayrollList!=undefined)
+    {
+        employeePayrollList.push(employeePayrollData);
+    }
+    else
+    {
+        employeePayrollList=[employeePayrollData];
+    }
+    alert(employeePayrollList.toString());
+    localStorage.setItem("EmployeePayrollList",JSON.stringify(employeePayrollList));
+}
+const createEmplooyeePayroll = () =>{
+    let employeePayrollData = new EmployeePayrollData();
+    try {
+        employeePayrollData.name = getInputValuebyId('#name');
+    } catch (e) {
+        setTextValue('.text-error',e)
+        throw e;
+    }
+    employeePayrollData.profilePic = getSelectedValues('[name=profile]').pop();
+    employeePayrollData.gender = getSelectedValues('[name=gender]').pop();
+    employeePayrollData.department = getSelectedValues('[name=department]');
+    employeePayrollData.salary = getInputValuebyId('#salary');
+    employeePayrollData.note = getInputValuebyId('#notes');
+    let date = getInputValuebyId('#day')+" " +getInputValuebyId('#month') + " " +getInputValuebyId('#year');
+    employeePayrollData.date = Date.parse(date);
+    alert(employeePayrollData.toString());
+    return employeePayrollData;
+}
+const getSelectedValues = (propertyValue) =>{
+    let allItems = document.querySelectorAll(propertyValue);
+    let setItems = [];
+    allItems.forEach(item =>{
+        if(item.checked) setItems.push(item.value);
+    });
+    return setItems;
+
+}
+const getInputValuebyId=(id) =>{
+    let value = document.querySelector(id).value;
+    return value;
+}
+const getInputElementValue =(id) => {
+    let value = document.getElementById(id).value;
+    return value
+}
